@@ -11,12 +11,14 @@ services:
       - api-server
 
   pigeoncoin:
-    image: lukepighetti/pigeoncoin:latest
+    image: twinkykms/pigeon:full
     restart: always
     volumes:
       - "chain_data:/root/.pigeon"
     environment:
       RPC_ALLOW_IP: "0.0.0.0/0"
+    ports:
+      - "8757:8757"
 
   mongo:
     build: ../explorer/db
