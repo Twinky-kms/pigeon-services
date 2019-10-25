@@ -1,0 +1,33 @@
+version: "3"
+services:
+  pigeon:
+    image: twinkykms/pigeon:explorer
+    restart: always
+    volumes:
+      - "chain_data:/root/.pigeon"
+    environment:
+      RPC_ALLOW_IP: "0.0.0.0/0"
+    ports:
+      - "8757:8757"
+
+  mongo:
+    build: ./db
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: explorer_database
+    volumes:
+      - "database_data:/data/db"
+
+  explorer:
+    build: ./pgn-express
+    restart: always
+    ports:
+      - "80:3001"
+      - "443:3001"
+    depends_on:
+      - mongo
+      - pigeon
+
+volumes:
+  chain_data:
+  database_data:
